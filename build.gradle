@@ -1,15 +1,6 @@
+apply plugin: 'java'
 
-buildscript {
-    repositories {
-        mavenCentral()
-        mavenLocal()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
-        classpath 'com.github.dcendents:android-maven-plugin:1.2'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
+dependencies {
+    compile 'joda-time:joda-time:2.7+'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
