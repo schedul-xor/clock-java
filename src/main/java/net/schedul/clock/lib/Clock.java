@@ -1,5 +1,8 @@
 package net.schedul.clock.lib;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.joda.time.DateTime;
 
 /**
@@ -10,15 +13,16 @@ public class Clock {
     private long floatingUtcMilliseconds;
     private long prevUtcMilliseconds;
     private double timePower;
-    private ClockUpdateReceivable tickEventDelegate;
+    private Collection<ClockUpdateReceivable> tickEventDelegates;
 
     public Clock() {
         this.timePower = 1.0;
         this.realUtcMilliseconds = this.floatingUtcMilliseconds = this.prevUtcMilliseconds = DateTime.now().getMillis();
+	this.tickEventDelegates = new HashSet<>();
     }
 
-    public void setTickEventDelegate(ClockUpdateReceivable tickEventDelegate) {
-        this.tickEventDelegate = tickEventDelegate;
+    public void addTickEventDelegate(ClockUpdateReceivable tickEventDelegate) {
+        this.tickEventDelegates.add(tickEventDelegate);
     }
 
     public void start() {
@@ -72,8 +76,8 @@ public class Clock {
     }
 
     public void handleTimeUpdatedEvent(){
-        if(tickEventDelegate != null){
-            tickEventDelegate.onClockUpdate(this.getUtcMilliseconds());
+	for(ClockUpdateReceivable l : this.tickEventDelegates){
+            l.onClockUpdate(this.getUtcMilliseconds());
         }
     }
 
