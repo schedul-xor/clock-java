@@ -18,7 +18,7 @@ public class Clock {
     public Clock() {
         this.timePower = 1.0;
         this.realUtcMilliseconds = this.floatingUtcMilliseconds = this.prevUtcMilliseconds = DateTime.now().getMillis();
-	this.tickEventDelegates = new HashSet<>();
+        this.tickEventDelegates = new HashSet<>();
     }
 
     public void addTickEventDelegate(ClockUpdateReceivable tickEventDelegate) {
@@ -75,8 +75,8 @@ public class Clock {
         this.timePower = timePower;
     }
 
-    public void handleTimeUpdatedEvent(){
-	for(ClockUpdateReceivable l : this.tickEventDelegates){
+    public void handleTimeUpdatedEvent() {
+        for (ClockUpdateReceivable l : this.tickEventDelegates) {
             l.onClockUpdate(this.getUtcMilliseconds());
         }
     }
