@@ -1,9 +1,9 @@
 package net.schedul.clock.lib;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-
-import org.joda.time.DateTime;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by xor on 27/03/15.
@@ -13,12 +13,12 @@ public class Clock {
     private long floatingUtcMilliseconds;
     private long prevUtcMilliseconds;
     private double timePower;
-    private Collection<ClockUpdateReceivable> tickEventDelegates;
+    private List<ClockUpdateReceivable> tickEventDelegates;
 
     public Clock() {
         this.timePower = 1.0;
-        this.realUtcMilliseconds = this.floatingUtcMilliseconds = this.prevUtcMilliseconds = DateTime.now().getMillis();
-        this.tickEventDelegates = new HashSet<>();
+        this.realUtcMilliseconds = this.floatingUtcMilliseconds = this.prevUtcMilliseconds = System.currentTimeMillis();
+        this.tickEventDelegates = new ArrayList<>();
     }
 
     public void addTickEventDelegate(ClockUpdateReceivable tickEventDelegate) {
@@ -26,18 +26,18 @@ public class Clock {
     }
 
     public void start() {
-        this.realUtcMilliseconds = DateTime.now().getMillis();
+        this.realUtcMilliseconds = System.currentTimeMillis();
         this.floatingUtcMilliseconds = this.prevUtcMilliseconds;
         this.handleTimeUpdatedEvent();
     }
 
     public void setUtcMilliseconds(long utcMilliseconds) {
         this.floatingUtcMilliseconds = utcMilliseconds;
-        this.realUtcMilliseconds = DateTime.now().getMillis();
+        this.realUtcMilliseconds = System.currentTimeMillis();
     }
 
     public long getUtcMilliseconds() {
-        long realDelta = DateTime.now().getMillis() - this.realUtcMilliseconds;
+        long realDelta = System.currentTimeMillis() - this.realUtcMilliseconds;
         long amplifiedRealDelta = (long) (realDelta * this.timePower);
         this.prevUtcMilliseconds = this.floatingUtcMilliseconds + amplifiedRealDelta;
         return this.prevUtcMilliseconds;
@@ -76,7 +76,9 @@ public class Clock {
     }
 
     public void handleTimeUpdatedEvent() {
-        for (ClockUpdateReceivable l : this.tickEventDelegates) {
+        int length = this.tickEventDelegates.size();
+        for (int i = 0; i < length; i++) {
+            ClockUpdateReceivable l = this.tickEventDelegates.get(i);
             l.onClockUpdate(this.getUtcMilliseconds());
         }
     }
