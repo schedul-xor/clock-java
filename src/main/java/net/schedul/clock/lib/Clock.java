@@ -1,9 +1,7 @@
 package net.schedul.clock.lib;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by xor on 27/03/15.
@@ -28,7 +26,7 @@ public class Clock {
     public void start() {
         this.realUtcMilliseconds = System.currentTimeMillis();
         this.floatingUtcMilliseconds = this.prevUtcMilliseconds;
-        this.handleTimeUpdatedEvent();
+        this.handleClockUpdateEvent();
     }
 
     public void setUtcMilliseconds(long utcMilliseconds) {
@@ -72,18 +70,33 @@ public class Clock {
     }
 
     public void setTimePower(double timePower) {
+        boolean isTimePowerUpdated = this.timePower != timePower;
         this.timePower = timePower;
+        if (isTimePowerUpdated) {
+            handlePowerUpdateEvent();
+        }
     }
 
-    public void handleTimeUpdatedEvent() {
+    public void handleClockUpdateEvent() {
+        int length = this.tickEventDelegates.size();
+        long utcMilliseconds = this.getUtcMilliseconds();
+        for (int i = 0; i < length; i++) {
+            ClockUpdateReceivable l = this.tickEventDelegates.get(i);
+            l.onClockUpdate(utcMilliseconds);
+        }
+    }
+
+    public void handlePowerUpdateEvent() {
         int length = this.tickEventDelegates.size();
         for (int i = 0; i < length; i++) {
             ClockUpdateReceivable l = this.tickEventDelegates.get(i);
-            l.onClockUpdate(this.getUtcMilliseconds());
+            l.onPowerUpdate(this.timePower);
         }
     }
 
     public interface ClockUpdateReceivable {
         void onClockUpdate(long utcMilliseconds);
+
+        void onPowerUpdate(double power);
     }
 }
