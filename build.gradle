@@ -3,3 +3,28 @@ apply plugin: 'java'
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
+
+allprojects {
+    group = 'com.ogiqvo.clock-java'
+    version = '0.0.0'
+    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+}
+
+// Automated Gradle project deployment to Sonatype OSSRH
+if (isReleaseVersion) {
+    afterEvaluate {
+        project.apply from: "${rootProject.projectDir}/deploy.gradle"
+    }
+}
+
+subprojects {
+    repositories {
+        maven { url 'https://repo.boundlessgeo.com/main' }
+        jcenter()
+    }
+
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
+    }
+}
