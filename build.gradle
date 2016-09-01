@@ -19,7 +19,7 @@ if (isReleaseVersion) {
 
 subprojects {
     repositories {
-        maven { url 'https://repo.boundlessgeo.com/main' }
+        maven { url "file:${System.getProperty('user.home')}/.m2/repository" }
         jcenter()
     }
 }
