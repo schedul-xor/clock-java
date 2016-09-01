@@ -6,7 +6,7 @@ dependencies {
 
 allprojects {
     group = 'com.ogiqvo.clock-java'
-    version = '0.0.0'
+    version = '0.0.2'
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 }
 
@@ -22,9 +22,7 @@ subprojects {
         maven { url 'https://repo.boundlessgeo.com/main' }
         jcenter()
     }
-
-    tasks.withType(JavaCompile) {
-        sourceCompatibility = JavaVersion.VERSION_1_7
-        targetCompatibility = JavaVersion.VERSION_1_7
-    }
 }
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
