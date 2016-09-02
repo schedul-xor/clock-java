@@ -32,6 +32,9 @@ repositories {
     jcenter()
 }
 
+artifacts {
+    archives sourcesJar
+}
 uploadArchives {
     repositories {
         mavenDeployer {
