@@ -1,28 +1,38 @@
-apply plugin: 'java'
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+    }
 }
 
 allprojects {
-    group = 'com.ogiqvo.clock-java'
-    version = '0.0.2'
+    group = 'com.ogiqvo'
+    version = 'master-SNAPSHOT'
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-}
 
-// Automated Gradle project deployment to Sonatype OSSRH
-if (isReleaseVersion) {
-    afterEvaluate {
-        project.apply from: "${rootProject.projectDir}/deploy.gradle"
+    ext.slf4jVersion = "1.7.25"
+
+    if (JavaVersion.current().isJava8Compatible()) {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+            logging.captureStandardError LogLevel.INFO
+            logging.captureStandardOutput LogLevel.INFO
+        }
     }
 }
 
 subprojects {
     repositories {
-        maven { url "file:${System.getProperty('user.home')}/.m2/repository" }
+        google()
         jcenter()
     }
-}
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
+    }
+}
