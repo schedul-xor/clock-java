@@ -45,11 +45,11 @@ uploadArchives {
             }
 
             pom.project {
-                packaging 'jar'
+                packaging 'clock'
 
-                name 'android-datetime-seeker'
+                name 'clock'
                 description 'Turntable shaped datetime editor for android.'
-                url 'https://github.com/schedul-xor/vtm'
+                url 'https://github.com/schedul-xor/clock-java'
 
                 licenses {
                     license {
@@ -59,9 +59,9 @@ uploadArchives {
                 }
 
                 scm {
-                    connection 'scm:git:https://github.com/schedul-xor/android-datetime-seeker'
-                    developerConnection 'scm:git:https://github.com/schedul-xor/android-datetime-seeker'
-                    url 'https://github.com/schedul-xor/android-datetime-seeker'
+                    connection 'scm:git:https://github.com/schedul-xor/clock-java'
+                    developerConnection 'scm:git:https://github.com/schedul-xor/clock-java'
+                    url 'https://github.com/schedul-xor/clock-java'
                 }
 
                 developers {
