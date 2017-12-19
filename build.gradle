@@ -11,7 +11,7 @@ buildscript {
 
 allprojects {
     group = 'com.ogiqvo'
-    version = 'master-SNAPSHOT'
+    version = '0.0.0'
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
     ext.slf4jVersion = "1.7.25"
